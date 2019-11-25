@@ -25,6 +25,7 @@ public:
 
     //Public functions
     void print();
+    Node* findMiddle();
 
 private:
 //Private Helper Functions
@@ -107,6 +108,29 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+Node* LinkedList::findMiddle() {
+    if(head == nullptr) { // Cannot do anything with an empty list.
+        return nullptr;
+    }
+    Node* cur = head;
+    int pos;
+    if(size % 2 == 0) {
+        pos = (size / 2) - 1;
+    } else {
+        pos = size / 2;
+    }
+    
+    int count = 0;
+    while(cur != nullptr) {
+        if(count == pos) {
+            return cur;
+        }
+        cur = cur->next;
+        count++;
+    }
+    return nullptr;
+}
+
 void LinkedList::print() {
     if(head == nullptr) {
         std::cout << "List empty" << std::endl;
