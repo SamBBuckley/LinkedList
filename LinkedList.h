@@ -22,12 +22,16 @@ public:
     //Helper Functions
     void clear();
     void push_back(int value);
+    void remove(int value);
+
 
     //Public functions
+    void removeMax();
     void print();
 
 private:
 //Private Helper Functions
+    Node* find(int value);
     void copy(const LinkedList& src);
 };
 
@@ -76,15 +80,59 @@ void LinkedList::push_back(int value) {
     this->size += 1;
 }
 
+Node* LinkedList::find(int value) {
+    Node* cur = head;
+    while(cur != nullptr) {
+        if(cur->value == value) {
+            return cur;
+        }
+        cur = cur->next;
+    }
+    return nullptr;
+}
+
+void LinkedList::remove(int value) {
+    if(head == nullptr) { // If nothing in list
+        return;
+    }
+    Node* delNode = find(value);
+    if(delNode == nullptr) { // If not found in list
+        return; 
+    }
+
+    if(head->value == value) { // If the head is the value to remove
+        delNode = head;
+        head = head->next;
+        delete delNode;
+        size--;
+        return;
+    }
+
+    Node* prevNode = head;
+    while(prevNode != nullptr && prevNode->next != delNode) {
+        prevNode = prevNode->next;
+    }
+
+    if(prevNode == nullptr) {
+        head = nullptr;
+        tail = nullptr;
+    } else {
+        prevNode->next = delNode->next;
+        if(prevNode->next == nullptr) {
+            tail = prevNode;
+        }
+    }
+
+    delete delNode;
+    size -= 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //                         Decleration of all constructors                  //
 //////////////////////////////////////////////////////////////////////////////
 LinkedList::LinkedList(int value) :
     head(nullptr), tail(nullptr), size(0) {
-        Node n = Node(value);
-        this->head = &n;
-        this->tail = &n;
-        this->size = 1;
+        push_back(value);
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -110,6 +158,28 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+void LinkedList::removeMax() {
+
+    if(head == nullptr) { // Can't do anything if there are no values.
+        return;
+    }
+
+    int max = head->value;
+    Node* cur = head;
+    while(cur != nullptr) { //Find the max
+        if(cur->value > max) {
+            max = cur->value;
+        }
+        cur = cur->next;
+    }
+    //Remove all values that are the max.
+    //Helper function remove() and find() added
+    while(find(max) != nullptr) {
+        remove(max);
+    }
+
+}
+
 void LinkedList::print() {
     if(head == nullptr) {
         std::cout << "List empty" << std::endl;
