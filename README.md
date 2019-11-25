@@ -5,6 +5,8 @@ The Master branch is just the base for a LinkedList and a Node so that you can c
 
 There are severall branches each with something different you can do with a LinkedList descirbed below.
 
+Tip: To change branches scoll up and click on the dropdown that says 'Branch: master' and select any branch you want
+
 
 Branch  ->  Description
 =========================================================
