@@ -25,9 +25,10 @@ public:
 
     //Public functions
     void print();
+    float getAverage();
 
 private:
-//Private Helper Functions
+    //Private Helper Functions
     void copy(const LinkedList& src);
 };
 
@@ -81,10 +82,7 @@ void LinkedList::push_back(int value) {
 //////////////////////////////////////////////////////////////////////////////
 LinkedList::LinkedList(int value) :
     head(nullptr), tail(nullptr), size(0) {
-        Node n = Node(value);
-        this->head = &n;
-        this->tail = &n;
-        this->size = 1;
+        push_back(value);
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -110,6 +108,24 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+float LinkedList::getAverage() {
+    if(head == nullptr) {
+        return -1; // Error as there is nothing in the list
+    }
+
+    int count = 0, sum = 0;
+
+    Node* cur = head;
+    while(cur != nullptr) {
+        count++;
+        sum += cur->value;
+        cur = cur->next;
+    }
+
+    return (float) sum / count;
+
+}
+
 void LinkedList::print() {
     if(head == nullptr) {
         std::cout << "List empty" << std::endl;
