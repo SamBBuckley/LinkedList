@@ -57,5 +57,30 @@ int main() {
     ll3.reverse();
     ll3.print();
 
+    //Find Middle Example 1
+    cout << endl << endl << endl << "Find Middle Examples:" << endl << "Example 1:" << endl;
+    LinkedList ll4 = LinkedList(18);
+    ll4.push_back(7);
+    ll4.push_back(15);
+    ll4.push_back(27);
+    cout << "Current List:" << endl;
+    ll4.print();
+    cout << "List Middle:" << endl;
+    cout << ll4.findMiddle()->value << endl;
+
+    //Find Middle Example 2
+    cout << endl << endl;
+    cout << "Example 2:" << endl;
+    LinkedList ll5 = LinkedList(18);
+    ll5.push_back(7);
+    ll5.push_back(15);
+    ll5.push_back(27);
+    ll5.push_back(24);
+    cout << "Current List:" << endl;
+    ll5.print();
+    cout << "List Middle:" << endl;
+    cout << ll5.findMiddle()->value << endl;
+
+
     return 0;
 }
