@@ -25,6 +25,8 @@ public:
 
     //Public functions
     void print();
+    void reverse();
+    
 
 private:
 //Private Helper Functions
@@ -81,10 +83,7 @@ void LinkedList::push_back(int value) {
 //////////////////////////////////////////////////////////////////////////////
 LinkedList::LinkedList(int value) :
     head(nullptr), tail(nullptr), size(0) {
-        Node n = Node(value);
-        this->head = &n;
-        this->tail = &n;
-        this->size = 1;
+        push_back(value);
     }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -110,6 +109,28 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+void LinkedList::reverse() {
+    Node* current = head;
+    Node* prev = nullptr;
+    Node* next = nullptr;
+    
+    //This looks confusing. But basically we are getting the pointer on the other side of each Node
+    //And setting the value of the points Node within the node to the one behind it.
+    //With the first value having a nullpointer after it making it the tail.
+
+    while(current != nullptr) { //While a value remains in the list
+        next = current->next; // Get the next node
+        current->next = prev; // Set this into our temporary prev holder.
+
+        prev = current; //Set the previous to the current
+        if(prev == nullptr) { // This will happen to the head essentially. Making it the tail.
+            tail = current;
+        }
+        current = next; // Continue through the LinkedList
+    }
+    head = prev;
+}
+
 void LinkedList::print() {
     if(head == nullptr) {
         std::cout << "List empty" << std::endl;
