@@ -25,10 +25,16 @@ public:
 
     //Public functions
     void print();
+    float getAverage();
+    void removeMax();
+    void reverse();
+
 
 private:
 //Private Helper Functions
     void copy(const LinkedList& src);
+    Node* find(int value);
+    void remove(int value);
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -76,6 +82,53 @@ void LinkedList::push_back(int value) {
     this->size += 1;
 }
 
+Node* LinkedList::find(int value) {
+    Node* cur = head;
+    while(cur != nullptr) {
+        if(cur->value == value) {
+            return cur;
+        }
+        cur = cur->next;
+    }
+    return nullptr;
+}
+
+void LinkedList::remove(int value) {
+    if(head == nullptr) { // If nothing in list
+        return;
+    }
+    Node* delNode = find(value);
+    if(delNode == nullptr) { // If not found in list
+        return; 
+    }
+
+    if(head->value == value) { // If the head is the value to remove
+        delNode = head;
+        head = head->next;
+        delete delNode;
+        size--;
+        return;
+    }
+
+    Node* prevNode = head;
+    while(prevNode != nullptr && prevNode->next != delNode) {
+        prevNode = prevNode->next;
+    }
+
+    if(prevNode == nullptr) {
+        head = nullptr;
+        tail = nullptr;
+    } else {
+        prevNode->next = delNode->next;
+        if(prevNode->next == nullptr) {
+            tail = prevNode;
+        }
+    }
+
+    delete delNode;
+    size -= 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //                         Decleration of all constructors                  //
 //////////////////////////////////////////////////////////////////////////////
@@ -107,6 +160,64 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+float LinkedList::getAverage() {
+    if(head == nullptr) {
+        return -1; // Error as there is nothing in the list
+    }
+
+    int count = 0, sum = 0;
+
+    Node* cur = head;
+    while(cur != nullptr) {
+        count++;
+        sum += cur->value;
+        cur = cur->next;
+    }
+    return (float) sum / count;
+}
+
+void LinkedList::removeMax() {
+    if(head == nullptr) { // Can't do anything if there are no values.
+        return;
+    }
+
+    int max = head->value;
+    Node* cur = head;
+    while(cur != nullptr) { //Find the max
+        if(cur->value > max) {
+            max = cur->value;
+        }
+        cur = cur->next;
+    }
+    //Remove all values that are the max.
+    //Helper function remove() and find() added
+    while(find(max) != nullptr) {
+        remove(max);
+    }
+}
+
+void LinkedList::reverse() {
+    Node* current = head;
+    Node* prev = nullptr;
+    Node* next = nullptr;
+    
+    //This looks confusing. But basically we are getting the pointer on the other side of each Node
+    //And setting the value of the points Node within the node to the one behind it.
+    //With the first value having a nullpointer after it making it the tail.
+
+    while(current != nullptr) { //While a value remains in the list
+        next = current->next; // Get the next node
+        current->next = prev; // Set this into our temporary prev holder.
+
+        prev = current; //Set the previous to the current
+        if(prev == nullptr) { // This will happen to the head essentially. Making it the tail.
+            tail = current;
+        }
+        current = next; // Continue through the LinkedList
+    }
+    head = prev;
+}
+
 void LinkedList::print() {
     if(head == nullptr) {
         std::cout << "List empty" << std::endl;
