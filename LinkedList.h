@@ -81,10 +81,7 @@ void LinkedList::push_back(int value) {
 //////////////////////////////////////////////////////////////////////////////
 LinkedList::LinkedList(int value) :
     head(nullptr), tail(nullptr), size(0) {
-        Node n = Node(value);
-        this->head = &n;
-        this->tail = &n;
-        this->size = 1;
+        push_back(value);
     }
 
 //////////////////////////////////////////////////////////////////////////////
