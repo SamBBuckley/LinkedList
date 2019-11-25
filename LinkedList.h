@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Node.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -5,69 +6,79 @@
 //  However it could be made more abstract by using 'typing'                //
 //////////////////////////////////////////////////////////////////////////////
 class LinkedList {
-
+    Node* head;
+    Node* tail;
+    unsigned int size;
 public:
     //My Constructors
-    LinkedList();
+    LinkedList() : head(nullptr), tail(nullptr), size(0) {}
     LinkedList(int value);
 
     //Big Three
     LinkedList(const LinkedList& ll); // Where ll is a LinkedList
     LinkedList& operator=(const LinkedList& rhs); // Where rhs is the LinkedList on the right side of =
     ~LinkedList();
+
     //Helper Functions
     void clear();
     void push_back(int value);
 
     //Public functions
-    Node* getFront() { return this->head; }
-    Node* getBack() {return this->tail; }
-    int getSize() { return this->size; }
+    void print();
 
 private:
-    Node* head;
-    Node* tail;
-    int size;
+//Private Helper Functions
+    void copy(const LinkedList& src);
 };
 
 //////////////////////////////////////////////////////////////////////////////
 //                       Decleration of Helper Functions                    //
 //////////////////////////////////////////////////////////////////////////////
+void LinkedList::copy(const LinkedList& src) {
+    Node* srcCur = src.head;
+    Node* cur = head;
+    while(srcCur != nullptr) {
+        Node* newNode = new Node(srcCur->value);
+        if(head == nullptr) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            cur->next = newNode;
+        }
+        cur = cur->next;
+        tail = newNode;
+        srcCur = srcCur->next;
+    }
+    size = src.size;
+}
+
 void LinkedList::clear() {
-    if(this->getFront() == nullptr) {
-        return;
+    Node* delNode = nullptr;
+    while(head != nullptr) {
+        delNode = head;
+        head = head->next;
+        delete delNode;
     }
-    Node* n = this->getFront();
-    while(n != nullptr) {
-        Node* nextNode = n->next;
-        n->next = nullptr;
-        delete n;
-        n = nextNode;
-    }
-    this->head = nullptr;
-    this->tail = nullptr;
-    this->size = 0;
+    head = nullptr;
+    tail = nullptr;
+    size = 0;
 }
 
 void LinkedList::push_back(int value) {
-    Node newNode = Node(value);
-    if(this->head == nullptr) {
-        this->head = &newNode;
-        this->tail = &newNode;
-        this->size = 1;
-        return;
+    Node* newNode = new Node(value);
+    if(head == nullptr) {
+        head = newNode;
+        tail = newNode;
     } else {
-        this->tail->next = &newNode;
-        this->tail = &newNode;
+        tail->next = newNode;
+        this->tail = newNode;
     }
+    this->size += 1;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //                         Decleration of all constructors                  //
 //////////////////////////////////////////////////////////////////////////////
-LinkedList::LinkedList() :
-    head(nullptr), tail(nullptr), size(0) {}
-
 LinkedList::LinkedList(int value) :
     head(nullptr), tail(nullptr), size(0) {
         Node n = Node(value);
@@ -80,31 +91,34 @@ LinkedList::LinkedList(int value) :
 //                          Decleration of the Big Three                    //
 //////////////////////////////////////////////////////////////////////////////
 LinkedList::LinkedList(const LinkedList& ll) {
-    this->clear();
-    Node* n = ll.head;
-    while(n != nullptr) {
-        push_back(n->value);
-        n = n->next;
-    }
+    copy(ll);
 }
 
 LinkedList& LinkedList::operator=(const LinkedList& rhs) {
-     this->clear();
-    Node* n = rhs.head;
-    while(n != nullptr) {
-        push_back(n->value);
-        n = n->next;
+    if(this != &rhs) {
+        clear();
+        copy(rhs);
     }
+    return *this;
 }
 
 LinkedList::~LinkedList() {
     clear();
-    delete this;
 }
 
 
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
-//                          For now all defined above.                      //
 //////////////////////////////////////////////////////////////////////////////
-
+void LinkedList::print() {
+    if(head == nullptr) {
+        std::cout << "List empty" << std::endl;
+        return;
+    }
+    Node* cur = head;
+    while(cur != nullptr) {
+        std::cout << cur->value << "->";
+        cur = cur->next;
+    }
+    std::cout << std::endl;
+}
