@@ -82,5 +82,17 @@ int main() {
     cout << ll5.findMiddle()->value << endl;
 
 
+    //Ordered Insertion Example 1
+    cout << endl << endl << endl << "Ordered Insertion Examples:" << endl << "Example 1:" << endl;
+    LinkedList ll6 = LinkedList(1);
+    ll6.push_back(2);
+    ll6.push_back(4);
+    ll6.push_back(5);
+    cout << "Current List:" << endl;
+    ll6.print();
+    cout << "List after the push back of (3): " << endl;
+    ll6.push_in_order(3);
+    ll6.print();
+
     return 0;
 }

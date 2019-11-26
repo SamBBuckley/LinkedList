@@ -29,6 +29,8 @@ public:
     void removeMax();
     void reverse();
     Node* findMiddle();
+    void push_in_order(int value);
+
 
 
 private:
@@ -161,6 +163,21 @@ LinkedList::~LinkedList() {
 //////////////////////////////////////////////////////////////////////////////
 //                          Decleration of public functions                 //
 //////////////////////////////////////////////////////////////////////////////
+
+void LinkedList::print() {
+    if(head == nullptr) {
+        std::cout << "List empty" << std::endl;
+        return;
+    }
+    Node* cur = head;
+    while(cur != nullptr) {
+        std::cout << cur->value << "->";
+        cur = cur->next;
+    }
+    std::cout << std::endl;
+}
+
+
 float LinkedList::getAverage() {
     if(head == nullptr) {
         return -1; // Error as there is nothing in the list
@@ -242,16 +259,24 @@ Node* LinkedList::findMiddle() {
     return nullptr;
 }
 
+void LinkedList::push_in_order(int value) { // This function will allow for you to push a new node of value 'value' into the list in assending order
 
-void LinkedList::print() {
-    if(head == nullptr) {
-        std::cout << "List empty" << std::endl;
+    Node* newNode = new Node(value);
+    if(head == nullptr) { // BaseCase 1, if there is nothing in the list.
+        newNode->next = head;
+        head = newNode;
         return;
+    } else if(value <= head->value) { // BaseCase 2, the value of 'value' is less than or equal that of head 
+        newNode->next = head;
+        head = newNode;
+        return;
+    } else { // Base Case 3 and 4, 'newNode' belongs at end or within the LinkedList
+        Node* current = head;
+
+        while(current->next != nullptr && current->next->value < newNode->value) {
+            current = current->next; // Shift down linked list
+        }
+        newNode->next = current->next;
+        current->next = newNode;
     }
-    Node* cur = head;
-    while(cur != nullptr) {
-        std::cout << cur->value << "->";
-        cur = cur->next;
-    }
-    std::cout << std::endl;
 }
