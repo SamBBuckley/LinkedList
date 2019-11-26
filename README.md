@@ -18,4 +18,8 @@ removeMax     ->     An example of removing the maximum of a LinkedList.
 _________________________________________________________
 reverseList     ->     An example of reversing the order of a LinkedList.
 _________________________________________________________
+findMiddle     ->     An example of finding the middle value of a LinkedList.
+_________________________________________________________
+orderedInsertion     ->     An example of inserting a value in assending order in a LinkedList.
+_________________________________________________________
 allParts      ->      Accumulation of all three branches above with master to show all the things done with a LinkedList in this repo.
